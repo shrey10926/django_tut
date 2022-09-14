@@ -1,0 +1,44 @@
+{%extends "iris/base.html"%}
+{%block content%}
+
+    {%if results%}
+        {{results}}
+    {%endif%}
+
+    <form method="POST">
+        {%csrf_token%}
+        {{form}}
+        <button>Submit</button>
+    </form>
+    
+    {%for i in posts%}
+        <img class="rounded-circle article-img" src="{{i.author.profile.image.url}}">
+        <h1><a href="{%url 'post-detail' i.id%}">{{i.title}}</a></h1>
+        <p>{{i.author}}</p>
+        <p>{{i.date|date:"d F, Y"}}</p>
+        <p>{{i.content}}</p>
+    {%endfor%}
+    
+    {%if is_paginated%}
+        
+        {%if page_obj.has_previous%}
+            <a href="?page=1">First</a>
+            <a href="?page={{page_obj.previous_page_number}}">Prev</a>
+        {%endif%}
+        
+        {%for num in page_obj.paginator.page_range%}
+            {%if page_obj.number == num%}
+                <a class="btn btn-info mb-4" href="?page={{num}}">{{num}}</a>
+            {%elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3'%}
+                <a class="btn btn-outline-info mb-4" href="?page={{num}}">{{num}}</a>
+            {%endif%}
+        {%endfor%}
+        
+        {%if page_obj.has_next%}
+            <a href="?page={{page_obj.next_page_number}}">Next</a>
+            <a href="?page={{page_obj.paginator.num_pages}}">Last</a>
+        {%endif%}
+        
+    {%endif%}
+    
+{%endblock content%}

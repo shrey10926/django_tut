@@ -1,0 +1,9 @@
+{%extends "iris/base.html"%}
+{%block content%}
+    <form method="POST">
+        {%csrf_token%}
+        <h2>Are you sure you wnat tot delete "{{object.title}}"?</h2>
+        <button>Yes</button>
+        <a href="{%url 'post-detail' object.id%}">Cancel</a>
+    </form>  
+{%endblock content%}

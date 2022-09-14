@@ -1,0 +1,25 @@
+{%extends "iris/base.html"%}
+{%block content%}
+
+    {%if results%}
+        {{results}}
+    {%endif%}
+    
+    <form method="POST">
+        {%csrf_token%}
+        {{form}}
+        <button>Submit</button>
+    </form>
+    
+    <img class="rounded-circle article-img" src="{{object.author.profile.image.url}}">
+    <h1>{{object.title}}</h1>
+    <p>{{object.author}}</p>
+    <p>{{object.date|date:"d F, Y"}}</p>
+    <p>{{object.content}}</p>
+    
+    {%if object.author == user%}
+        <a href="{%url 'post-update' object.id%}">Update</a>
+        <a href="{%url 'post-delete' object.id%}">Delete</a>
+    {%endif%}
+
+{%endblock content%}
